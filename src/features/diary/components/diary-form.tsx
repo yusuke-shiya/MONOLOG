@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { DiaryEntryFormValues, diaryEntrySchema } from "@/lib/validations";
 import { Button } from "@/components/ui/button";
-import { MoodSelector } from "@/features/mood/components/MoodSelector";
+import { MoodSelector } from "@/features/mood/components/mood-selector";
 import { useDiaryStore } from "../stores/diary-store";
 import {
   Form,

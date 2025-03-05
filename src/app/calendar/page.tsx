@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
-import { MonthCalendar } from "@/features/calendar/components/MonthCalendar";
-import { DiaryForm } from "@/features/diary/components/DiaryForm";
+import { MonthCalendar } from "@/features/calendar/components/month-calendar";
+import { DiaryForm } from "@/features/diary/components/diary-form";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import dayjs from "dayjs";
 

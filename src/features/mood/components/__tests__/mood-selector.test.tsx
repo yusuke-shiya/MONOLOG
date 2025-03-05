@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { MoodSelector } from '../MoodSelector';
+import { MoodSelector } from '../mood-selector';
 import { getMoodLabel } from '../../utils/mood-utils';
 
 // スライダーのテストのためのヘルパー関数

@@ -1,12 +1,12 @@
 "use client";
 
 import React from "react";
-import { DiaryForm } from "@/features/diary/components/DiaryForm";
-import { DiaryEntryView } from "@/features/diary/components/DiaryEntry";
+import { DiaryForm } from "@/features/diary/components/diary-form";
+import { DiaryEntryView } from "@/features/diary/components/diary-entry";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useDiaryStore } from "@/features/diary/stores/diary-store";
 import dayjs from "dayjs";
-import { MonthCalendar } from "@/features/calendar/components/MonthCalendar";
+import { MonthCalendar } from "@/features/calendar/components/month-calendar";
 
 export default function Home() {
   return <HomePage />;

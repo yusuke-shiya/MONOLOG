@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Calendar } from "@/components/ui/calendar";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useDiaryStore } from "@/features/diary/stores/diary-store";
-import { DiaryEntryView } from "@/features/diary/components/DiaryEntry";
+import { DiaryEntryView } from "@/features/diary/components/diary-entry";
 import { getMoodColor } from "@/features/mood/utils/mood-utils";
 import dayjs from "dayjs";
 import "dayjs/locale/ja";
