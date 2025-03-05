@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { StatsDisplay } from "@/features/stats/components/StatsDisplay";
+import { StatsDisplay } from "@/features/stats/components/stats-display";
 
 /**
  * 統計ページ
