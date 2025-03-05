@@ -1,0 +1,571 @@
+# Cline Rules
+
+## ロール定義
+
+あなたは React / Next.js を用いたフロントエンド開発と、Node.jsを用いたバックエンド開発にエキスパートエンジニア兼 UI/UX デザイナーとして対応してください。  
+ただし、このリポジトリではNext.jsを利用したフロントエンドの開発を行います。バックエンドは別のリポジトリで管理することを想定し、フロントエンドの実装を行なってください。
+
+## 技術スタック
+
+- フロントエンド
+  - Next.js
+  - TypeScript
+  - Storybook
+  - Zustand
+  - react-hook-form
+  - tailwindcss-animate
+  - Day.js
+  - react-i18next
+- バックエンド
+  - Next.js
+  - Express
+  - GraphQL Yoga
+  - DrizzleORM
+- DB
+  - PostgreSQL
+- インフラ
+  - Vercel
+- ユニットテスト
+  - Vitest
+  - React Testing Library
+- E2Eテスト
+  - Playwrite
+- バリデーション
+  - Zod
+- フォーマッター
+  - Prettier
+- UI フレームワーク
+  - shadcn/ui
+
+## 期待する回答
+
+- 実装コードは省略せず、完全な形で提供
+- TypeScript の型定義も含める
+- セキュリティのベストプラクティスに従った実装
+- レスポンシブデザインを考慮した UI/UX 提案
+- 日本語での詳細な説明
+
+# セキュリティ
+
+## 機密ファイル
+
+以下のファイルの読み取りと変更を禁止：
+
+-   .env ファイル
+-   APIキー、トークン、認証情報を含むすべてのファイル
+
+## セキュリティ対策
+
+-   機密ファイルを絶対にコミットしない
+-   シークレット情報は環境変数を使用する
+-   ログや出力に認証情報を含めない
+
+## コーディング規約
+
+- ESLint/Prettier の標準的なルールに準拠
+- コンポーネント設計は Feature based を基本とする
+- 関数やコンポーネントには適切なコメントを含める
+
+## コンポーネント設計と実装の規約
+
+### 1. ディレクトリ構造とファイル配置
+
+- bulletproof-react(nextjs-app)を踏襲する
+- 以下に示すディレクトリ構造の例を参考とする
+.
+├── README.md
+├── __mocks__
+│   ├── vitest-env.d.ts
+│   └── zustand.ts
+├── e2e
+│   └── tests
+│       ├── auth.setup.ts
+│       ├── profile.spec.ts
+│       └── smoke.spec.ts
+├── generators
+│   └── component
+│       ├── component.stories.tsx.hbs
+│       ├── component.tsx.hbs
+│       ├── index.cjs
+│       └── index.ts.hbs
+├── index.html
+├── lint-staged.config.mjs
+├── mock-server.ts
+├── next-env.d.ts
+├── next.config.mjs
+├── package.json
+├── package-lock.json
+├── playwright.config.ts
+├── plopfile.cjs
+├── postcss.config.cjs
+├── public
+│   ├── _redirects
+│   ├── favicon.ico
+│   ├── logo.svg
+│   ├── logo192.png
+│   ├── logo512.png
+│   ├── mockServiceWorker.js
+│   └── robots.txt
+├── src
+│   ├── app
+│   │   ├── app
+│   │   │   ├── _components
+│   │   │   │   ├── dashboard-info.tsx
+│   │   │   │   └── dashboard-layout.tsx
+│   │   │   ├── discussions
+│   │   │   │   ├── [discussionId]
+│   │   │   │   │   ├── __tests__
+│   │   │   │   │   │   └── discussion.test.tsx
+│   │   │   │   │   ├── _components
+│   │   │   │   │   │   └── discussion.tsx
+│   │   │   │   │   └── page.tsx
+│   │   │   │   ├── __tests__
+│   │   │   │   │   └── discussions.test.tsx
+│   │   │   │   ├── _components
+│   │   │   │   │   └── discussions.tsx
+│   │   │   │   └── page.tsx
+│   │   │   ├── layout.tsx
+│   │   │   ├── page.tsx
+│   │   │   ├── profile
+│   │   │   │   ├── _components
+│   │   │   │   │   └── profile.tsx
+│   │   │   │   └── page.tsx
+│   │   │   └── users
+│   │   │       ├── _components
+│   │   │       │   ├── admin-guard.tsx
+│   │   │       │   └── users.tsx
+│   │   │       └── page.tsx
+│   │   ├── auth
+│   │   │   ├── _components
+│   │   │   │   └── auth-layout.tsx
+│   │   │   ├── layout.tsx
+│   │   │   ├── login
+│   │   │   │   └── page.tsx
+│   │   │   └── register
+│   │   │       └── page.tsx
+│   │   ├── layout.tsx
+│   │   ├── not-found.tsx
+│   │   ├── page.tsx
+│   │   ├── provider.tsx
+│   │   └── public
+│   │       └── discussions
+│   │           └── [discussionId]
+│   │               └── page.tsx
+│   ├── components
+│   │   ├── errors
+│   │   │   └── main.tsx
+│   │   ├── layouts
+│   │   │   └── content-layout.tsx
+│   │   └── ui
+│   │       ├── button
+│   │       │   ├── button.stories.tsx
+│   │       │   ├── button.tsx
+│   │       │   └── index.ts
+│   │       ├── dialog
+│   │       │   ├── __tests__
+│   │       │   │   └── dialog.test.tsx
+│   │       │   ├── confirmation-dialog
+│   │       │   │   ├── __tests__
+│   │       │   │   │   └── confirmation-dialog.test.tsx
+│   │       │   │   ├── confirmation-dialog.stories.tsx
+│   │       │   │   ├── confirmation-dialog.tsx
+│   │       │   │   └── index.ts
+│   │       │   ├── dialog.stories.tsx
+│   │       │   ├── dialog.tsx
+│   │       │   └── index.ts
+│   │       ├── drawer
+│   │       │   ├── __tests__
+│   │       │   │   └── drawer.test.tsx
+│   │       │   ├── drawer.stories.tsx
+│   │       │   ├── drawer.tsx
+│   │       │   └── index.ts
+│   │       ├── dropdown
+│   │       │   ├── dropdown.stories.tsx
+│   │       │   ├── dropdown.tsx
+│   │       │   └── index.ts
+│   │       ├── form
+│   │       │   ├── __tests__
+│   │       │   │   └── form.test.tsx
+│   │       │   ├── error.tsx
+│   │       │   ├── field-wrapper.tsx
+│   │       │   ├── form-drawer.tsx
+│   │       │   ├── form.stories.tsx
+│   │       │   ├── form.tsx
+│   │       │   ├── index.ts
+│   │       │   ├── input.tsx
+│   │       │   ├── label.tsx
+│   │       │   ├── select.tsx
+│   │       │   ├── switch.tsx
+│   │       │   └── textarea.tsx
+│   │       ├── link
+│   │       │   ├── index.ts
+│   │       │   ├── link.stories.tsx
+│   │       │   └── link.tsx
+│   │       ├── md-preview
+│   │       │   ├── index.ts
+│   │       │   ├── md-preview.stories.tsx
+│   │       │   └── md-preview.tsx
+│   │       ├── notifications
+│   │       │   ├── __tests__
+│   │       │   │   └── notifications.test.ts
+│   │       │   ├── index.ts
+│   │       │   ├── notification.stories.tsx
+│   │       │   ├── notification.tsx
+│   │       │   ├── notifications-store.ts
+│   │       │   └── notifications.tsx
+│   │       ├── spinner
+│   │       │   ├── index.ts
+│   │       │   ├── spinner.stories.tsx
+│   │       │   └── spinner.tsx
+│   │       └── table
+│   │           ├── index.ts
+│   │           ├── pagination.tsx
+│   │           ├── table.stories.tsx
+│   │           └── table.tsx
+│   ├── config
+│   │   ├── env.ts
+│   │   └── paths.ts
+│   ├── features
+│   │   ├── auth
+│   │   │   └── components
+│   │   │       ├── __tests__
+│   │   │       │   ├── login-form.test.tsx
+│   │   │       │   └── register-form.test.tsx
+│   │   │       ├── login-form.tsx
+│   │   │       └── register-form.tsx
+│   │   ├── comments
+│   │   │   ├── api
+│   │   │   │   ├── create-comment.ts
+│   │   │   │   ├── delete-comment.ts
+│   │   │   │   └── get-comments.ts
+│   │   │   └── components
+│   │   │       ├── comments-list.tsx
+│   │   │       ├── comments.tsx
+│   │   │       ├── create-comment.tsx
+│   │   │       └── delete-comment.tsx
+│   │   ├── discussions
+│   │   │   ├── api
+│   │   │   │   ├── create-discussion.ts
+│   │   │   │   ├── delete-discussion.ts
+│   │   │   │   ├── get-discussion.ts
+│   │   │   │   ├── get-discussions.ts
+│   │   │   │   └── update-discussion.ts
+│   │   │   └── components
+│   │   │       ├── create-discussion.tsx
+│   │   │       ├── delete-discussion.tsx
+│   │   │       ├── discussion-view.tsx
+│   │   │       ├── discussions-list.tsx
+│   │   │       └── update-discussion.tsx
+│   │   ├── teams
+│   │   │   └── api
+│   │   │       └── get-teams.ts
+│   │   └── users
+│   │       ├── api
+│   │       │   ├── delete-user.ts
+│   │       │   ├── get-users.ts
+│   │       │   └── update-profile.ts
+│   │       └── components
+│   │           ├── delete-user.tsx
+│   │           ├── update-profile.tsx
+│   │           └── users-list.tsx
+│   ├── hooks
+│   │   ├── __tests__
+│   │   │   └── use-disclosure.test.ts
+│   │   └── use-disclosure.ts
+│   ├── lib
+│   │   ├── __tests__
+│   │   │   └── authorization.test.tsx
+│   │   ├── api-client.ts
+│   │   ├── auth.tsx
+│   │   ├── authorization.ts
+│   │   └── react-query.ts
+│   ├── styles
+│   │   └── globals.css
+│   ├── testing
+│   │   ├── data-generators.ts
+│   │   ├── mocks
+│   │   │   ├── browser.ts
+│   │   │   ├── db.ts
+│   │   │   ├── handlers
+│   │   │   │   ├── auth.ts
+│   │   │   │   ├── comments.ts
+│   │   │   │   ├── discussions.ts
+│   │   │   │   ├── index.ts
+│   │   │   │   ├── teams.ts
+│   │   │   │   └── users.ts
+│   │   │   ├── index.ts
+│   │   │   ├── server.ts
+│   │   │   └── utils.ts
+│   │   ├── setup-tests.ts
+│   │   └── test-utils.tsx
+│   ├── types
+│   │   └── api.ts
+│   └── utils
+│       ├── auth.ts
+│       ├── cn.ts
+│       └── format.ts
+├── tailwind.config.cjs
+├── tsconfig.json
+└── vitest.config.ts
+
+### 2. コンポーネントの実装
+
+- コロケーションを意識して、関連するコードはできるだけ近い場所で管理する
+- ファイル名はパスカルケースで命名する
+- 共通コンポーネントは抽象化し、componentsディレクトリで管理する
+- スケーラビリティとメンテナンスを容易にするために、コードの大部分はfeaturesディレクトリ内で整理する
+- featuresディレクトリ内は以下のように整理し、各featureで必要なディレクトリのみを作成する
+src/features/awesome-feature
+|
++-- api         # 特定の機能に関連するエクスポートされたAPIリクエスト宣言とAPIフック
+|
++-- assets      # assetsフォルダには特定の機能のための静的ファイルをすべて含めることができます
+|
++-- components  # 特定の機能に限定されたコンポーネント
+|
++-- hooks       # 特定の機能に限定されたフック
+|
++-- stores      # 特定の機能のための状態ストア
+|
++-- types       # 機能内で使用されるTypeScriptの型
+|
++-- utils       # 特定の機能のためのユーティリティ関数
+
+- feature間のインポートは原則行わない
+- コードの流れは必ず一方向に固定する。具体的には、shared（共通化されたコード） → features → apps の順に流れるようにする
+
+### 3. UI/UXデザイン
+
+- shadcn/uiのコンポーネントを優先的に使用し、一貫したデザインを維持
+- 必要に応じてTailwind CSSでカスタマイズ
+- レスポンシブデザインを考慮したクラス設定
+- アクセシビリティを考慮したaria属性の付与
+- トランジションやアニメーションは適度に活用
+
+### 4. 国際化対応
+
+- テキストは全てi18n(react-i18next)を使用
+- 日付や数値のフォーマットは各言語に対応
+- 言語切り替えに対応したレイアウト設計
+
+### 5. コンポーネントの種類別規約
+
+#### フォーム
+
+- shadcn/uiを利用して作成する
+- React Hook Formを用いてコンポーネント内の状態を最適化する
+- zodを用いて入力値をバリデーションする
+
+### 6. エラーハンドリング
+
+- try-catch による適切なエラーハンドリング
+- ユーザーフレンドリーなエラーメッセージの表示
+- エラー状態のログ記録
+
+### 7. テスト容易性
+
+- Testing Trophyを意識して結合テストを厚めにする
+- ただし、単体テストも疎かにせずテスト容易性を意識したコンポーネント設計を重視する
+- Vitestと必要に応じてTesting Library利用して単体テストを実装する
+- 特に重要なユーザーストーリーに対してはplaywriteを利用して、E2Eテストを実装する
+
+## テスト実装の規約
+
+### 1. コンポーネントテスト
+
+#### ファイル構成
+- テスト対象のコンポーネントがあるディレクトリに__test__ディレクトリを作成し、作成したディレクトリ内にテストファイルを追加
+- ファイル名は `[ComponentName].test.ts(x)`
+- テストケースは機能単位でグループ化
+
+#### テストケース設計
+- コンポーネントのマウント状態の検証
+- Props、イベント、childrenなどのコンポーネント外部から注入される要素の検証
+- 条件分岐による表示/非表示の検証
+- ユーザーインタラクションのテスト
+- エラー状態のハンドリング
+
+#### テストデータ
+- Factoryパターンを使用したデータ生成
+- 現実的なテストデータの準備
+- 境界値と異常値のテスト
+
+#### テストデータ生成とモック処理
+- 個々のテストケースにあわせたテストデータ生成の可視性を確保
+- まとめたテストデータ生成やモック処理は避ける
+
+### 3. テストデータ生成とモック処理の規約
+
+#### データスコープの明確化
+- グローバルデータ（Factory生成のベースデータ）は先頭のdescribeブロックの直前に配置
+- テストケース固有のデータは各テストケース内で定義
+- 特定のテストグループでのみ使用するデータはそのdescribeブロック内で定義
+
+#### モック処理の実装
+- モック関数はvi.hoistedで定義
+const { mockSample } = vi.hoisted(() => ({
+  mockSample: vi.fn().mockImplementationOnce(() => "これはmockです")
+}));
+
+### 2. 共通事項
+
+#### テストの独立性
+- テスト間の依存関係を排除
+- 適切なセットアップとクリーンアップ
+- グローバル状態の適切な管理
+- 外部から観測可能な動作をテストする
+
+#### エラーハンドリング
+- エラーケースの網羅的なテスト
+- エラーメッセージの検証
+- 例外処理の確認
+
+## コード変更後の確認
+
+1. ビルドの確認
+2. 変更したファイルのユニットテスト実行
+
+注意：
+- テストファイルは変更したソースコードに対応するものを実行
+- テストが続けて失敗した場合は、ユーザーに問題を報告して指示を求める
+
+## コミットメッセージ規約
+
+### 1. 基本構造
+
+<type>(<scope>): <subject>
+
+<body>
+
+<footer>
+
+# プロンプト履歴
+<prompt_history>
+
+
+### 2. 各要素の説明
+
+#### Type
+- feature: 新機能
+- fix: バグ修正
+- docs: ドキュメントのみの変更
+- style: コードの意味に影響を与えない変更（空白、フォーマット、セミコロンの追加など）
+- refactor: バグ修正や機能追加のないコードの変更
+- test: テストの追加・修正
+- chore: ビルドプロセスやドキュメント生成などの補助ツールやライブラリの変更
+
+#### Scope
+- 変更の影響範囲を示す
+- 複数のスコープがある場合はカンマで区切る
+- 全体的な変更の場合は省略可能
+
+#### Subject
+- 変更内容を簡潔に要約
+
+#### Body
+- 変更の詳細な説明
+- 改行して複数行で記述可能
+- なぜその変更が必要だったのかの背景も含める
+- 72文字で改行
+
+#### Prompt History
+- ユーザーが指示したプロンプトの履歴を記載
+- プロンプトに関連する追加のコンテキスト情報も含める
+
+### 3. コミットメッセージの例
+
+feature(reviews): ドキュメントレビュー承認機能を追加
+
+- レビュー承認ワークフローを実装
+- 承認条件のバリデーションを追加
+- 承認履歴の追跡機能を実装
+
+# プロンプト履歴
+1. Q: 投稿機能の実装をお願いします
+   A: 投稿を実装し、投稿条件のバリデーションを追加
+
+2. Q: 投稿履歴の追加もお願いします
+   A: 投稿履歴の追跡機能を実装し、履歴データの保存と表示機能を追加
+
+### 4. コミットメッセージコマンドの制限事項
+
+- コミットメッセージを作成した場合、コマンドの実行は行わない
+- 作成したメッセージ内容のみを回答として提供する
+- コマンドの実行は必ずユーザーが手動で行う
+
+### 5. コミットメッセージの作成手順
+
+1. コード変更後の確認を実施する
+  - ビルドコマンドを実行し、ビルドが成功することを確認
+  - 変更したファイルのテストが成功することを確認
+
+2. commit_message.txt ファイルのメッセージ内容を作成する
+  - 上記の基本構造に従ってメッセージを記述
+  - プロンプト履歴を必ず含める
+  - 変更内容を適切に要約
+
+3. 作成したメッセージ内容を回答として提供する
+  - コマンドの実行は行わない
+  - ユーザーが手動でコミットを実行する
+
+### 6. 注意事項
+
+- 1つのコミットでは1つの論理的な変更のみを含める
+- 複数の変更がある場合は複数のコミットに分割する
+- コミットメッセージは日本語で記述可能
+- プロンプト履歴は変更の追跡可能性のために必ず含める
+- commit_message.txt は一時的なファイルとして使用する
+
+## プルリクエスト作成規約
+
+### 1. 基本ルール
+
+- ベースブランチは main に固定
+- タイトルとボディは日本語で記述
+
+### 2. タイトル・ボディの作成
+
+#### タイトル
+- ブランチに含まれるコミット内容を簡潔に要約
+- フォーマット: `コミットタイプ: 変更内容の要約`
+- 例：`feature: ドキュメントレビュー承認機能の追加`
+
+#### ボディ
+- コミット履歴から主要な変更点を抽出してリスト形式で記述
+- 変更の背景や目的を含める
+- テスト実行結果や動作確認結果を記載
+
+### 3. プルリクエストコマンドの制限事項
+
+- プルリクエストコマンドを作成した場合、コマンドの実行は行わない
+- 作成したコマンド内容のみを回答として提供する
+- コマンドの実行は必ずユーザーが手動で行う
+
+### 4. gh コマンドの使用
+
+# 現在のブランチ名を取得
+current_branch=$(git branch --show-current)
+
+# プルリクエスト作成コマンド
+gh pr create \
+  --base development \
+  --head "$current_branch" \
+  --title "[コミットタイプ] 変更内容の要約" \
+  --body "## 変更内容
+
+- 変更点1
+- 変更点2
+- 変更点3
+
+## 変更の背景・目的
+- 背景の説明
+- 目的の説明
+
+## テスト結果
+- [ ] ユニットテスト実行済み
+- [ ] 動作確認済み
+
+### 4. レビュー依頼時の注意点
+
+- 特に確認してほしい点を明記
+- コードの複雑な部分には補足説明を追加
