@@ -52,6 +52,7 @@ export const MoodSelector: React.FC<MoodSelectorProps> = ({
             key={score}
             className="flex-1 h-full"
             style={{ backgroundColor: getMoodColor(score) }}
+            data-testid="color-bar-segment"
           />
         ))}
       </div>
