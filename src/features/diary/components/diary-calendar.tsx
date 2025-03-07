@@ -36,15 +36,15 @@ const CustomDay = ({ day, diaryEntries }: { day: Date; diaryEntries: any }) => {
   );
 };
 
-interface MonthCalendarProps {
+interface DiaryCalendarProps {
   onSelectDate?: (date: string) => void;
 }
 
 /**
- * 月間カレンダーコンポーネント
+ * 日記カレンダーコンポーネント
  * 各日付に気分スコアの色を表示し、日記がある日付をクリックすると詳細が表示される
  */
-export const MonthCalendar: React.FC<MonthCalendarProps> = ({ onSelectDate }) => {
+export const DiaryCalendar: React.FC<DiaryCalendarProps> = ({ onSelectDate }) => {
   const entries = useDiaryStore((state) => state.entries);
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
   const [dialogOpen, setDialogOpen] = useState(false);

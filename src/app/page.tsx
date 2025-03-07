@@ -6,7 +6,7 @@ import { DiaryEntryView } from "@/features/diary/components/diary-entry";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useDiaryStore } from "@/features/diary/stores/diary-store";
 import dayjs from "dayjs";
-import { MonthCalendar } from "@/features/calendar/components/month-calendar";
+import { MonthCalendar } from "@/features/diary/components/diary-calendar";
 
 export default function Home() {
   return <HomePage />;

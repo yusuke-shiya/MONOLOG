@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { MonthCalendar } from "@/features/calendar/components/month-calendar";
+import { DiaryCalendar } from "@/features/diary/components/diary-calendar";
 import { DiaryForm } from "@/features/diary/components/diary-form";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import dayjs from "dayjs";
@@ -37,7 +37,7 @@ export default function CalendarPage() {
       </p>
 
       <div className="p-4 bg-white rounded-lg shadow-sm">
-        <MonthCalendar onSelectDate={handleSelectDate} />
+        <DiaryCalendar onSelectDate={handleSelectDate} />
       </div>
 
       {/* 新規日記作成ダイアログ */}
