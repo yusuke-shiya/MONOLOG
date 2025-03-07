@@ -6,7 +6,7 @@ import { DiaryEntryView } from "@/features/diary/components/diary-entry";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useDiaryStore } from "@/features/diary/stores/diary-store";
 import dayjs from "dayjs";
-import { MonthCalendar } from "@/features/diary/components/diary-calendar";
+import { DiaryCalendar } from "@/features/diary/components/diary-calendar";
 
 export default function Home() {
   return <HomePage />;
@@ -73,7 +73,7 @@ const HomePage = () => {
       {/* 今週の記録カレンダー */}
       <div>
         <h2 className="text-xl font-bold mb-4">今週の記録</h2>
-        <MonthCalendar
+        <DiaryCalendar
           onSelectDate={(date) => {
             if (date === today) {
               setIsEditing(true);
