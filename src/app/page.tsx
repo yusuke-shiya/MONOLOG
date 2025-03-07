@@ -1,12 +1,13 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { DiaryForm } from "@/features/diary/components/diary-form";
 import { DiaryEntryView } from "@/features/diary/components/diary-entry";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useDiaryStore } from "@/features/diary/stores/diary-store";
 import dayjs from "dayjs";
 import { DiaryCalendar } from "@/features/diary/components/diary-calendar";
+import { DiaryEntry } from "@/features/diary/types/diary";
 
 export default function Home() {
   return <HomePage />;
@@ -16,15 +17,15 @@ export default function Home() {
  * クライアントコンポーネントとして実装
  */
 const HomePage = () => {
-  const { entries, getEntryByDate, getStreak } = useDiaryStore();
+  const { getEntryByDate, getStreak } = useDiaryStore();
 
   // 今日の日付と日記エントリーの取得
   const today = dayjs().format("YYYY-MM-DD");
-  const todayEntry = getEntryByDate(today);
-  const streak = getStreak();
+  const [todayEntry, setTodayEntry] = useState<DiaryEntry | null>(null);
+  const [streak, setStreak] = useState(0);
 
   // 編集モードの状態管理
-  const [isEditing, setIsEditing] = React.useState(!todayEntry);
+  const [isEditing, setIsEditing] = useState(false);
 
   const handleEditClick = () => {
     setIsEditing(true);
@@ -32,7 +33,14 @@ const HomePage = () => {
 
   const handleFormSuccess = () => {
     setIsEditing(false);
+    setTodayEntry(getEntryByDate(today) || null);
+    setStreak(getStreak());
   };
+
+  useEffect(() => {
+    setTodayEntry(getEntryByDate(today) || null);
+    setStreak(getStreak());
+  }, []);
 
   return (
     <div className="space-y-8">
