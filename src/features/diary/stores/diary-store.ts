@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { DiaryEntry } from "@/types/diary";
+import { DiaryEntry } from "@/features/diary/types/diary";
 import dayjs from "dayjs";
 
 /**

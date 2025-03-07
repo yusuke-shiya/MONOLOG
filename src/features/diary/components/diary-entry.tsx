@@ -1,7 +1,7 @@
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { DiaryEntry as DiaryEntryType } from "@/types/diary";
+import { DiaryEntry as DiaryEntryType } from "@/features/diary/types/diary";
 import { getMoodLabel, getMoodStyleClass } from "@/features/mood/utils/mood-utils";
 import dayjs from "dayjs";
 
