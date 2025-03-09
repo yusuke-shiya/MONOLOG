@@ -2,8 +2,8 @@
  * Zustandストアをテストするためのユーティリティ関数群
  */
 import { act } from '@testing-library/react';
-import { StateCreator, create } from 'zustand';
 import { vi } from 'vitest';
+import { create } from 'zustand';
 
 /**
  * テスト用にZustandストアを作成するシンプルな関数
@@ -14,7 +14,7 @@ import { vi } from 'vitest';
  */
 export function createTestStore<T extends object>(initialState: Partial<T>) {
   // createStoreは通常のZustandのcreate関数を使用
-  const useStore = create<T>((set) => ({
+  const useStore = create<T>(() => ({
     ...initialState as T,
   }));
 
@@ -59,56 +59,3 @@ export function mockZustandStore<T extends object>(initialState: Partial<T>) {
 
   return store;
 }
-
-/**
- * Zustandモジュールをモック化する
- * vi.mock() 内で使用するためのヘルパー関数
- * 
- * @returns モック化されたZustandの create 関数と実装マップ
- */
-export const mockZustand = () => {
-  // Zustandストアのインターフェース定義
-  interface StoreApi<T> {
-    setState: (partial: Partial<T> | ((state: T) => Partial<T>), replace?: boolean) => void;
-    getState: () => T;
-    subscribe: (listener: (state: T, prevState: T) => void) => () => void;
-    destroy: () => void;
-  }
-
-  // ストア作成関数の型
-  type StoreCreator<T> = (setState: StoreApi<T>['setState'], getState: () => T, api: StoreApi<T>) => T;
-
-  const implementations = new Map<StoreCreator<any>, StoreApi<any> & any>();
-
-  return {
-    create: (<T>(createState: StoreCreator<T>) => {
-      // 巡回参照に対応するため、先に空のオブジェクトを作成
-      const api = {} as StoreApi<T> & T;
-
-      // setState関数
-      const setState = (partial: Partial<T> | ((state: T) => Partial<T>), replace?: boolean) => {
-        api.setState(partial, replace);
-      };
-
-      // getState関数
-      const getState = () => api;
-
-      // ストア作成関数を実行して状態部分を取得
-      const state = createState(setState, getState, api);
-
-      // apiオブジェクトに状態とメソッドを追加
-      Object.assign(api, state);
-
-      // メソッドをモック化
-      api.setState = vi.fn();
-      api.getState = vi.fn(() => api);
-      api.subscribe = vi.fn(() => () => { });
-      api.destroy = vi.fn();
-
-      implementations.set(createState, api);
-
-      return api;
-    }) as typeof create,
-    implementations,
-  };
-};
