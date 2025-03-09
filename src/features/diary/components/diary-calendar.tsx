@@ -75,7 +75,7 @@ export const DiaryCalendar: React.FC<DiaryCalendarProps> = ({ onSelectDate }) =>
         onSelect={handleSelect}
         className="rounded-md border"
         components={{
-          Day: ({ date, ...props }) => CustomDay({ day: date, diaryEntries: entries }),
+          DayContent: ({ date }) => CustomDay({ day: date, diaryEntries: entries }),
         }}
       />
 
