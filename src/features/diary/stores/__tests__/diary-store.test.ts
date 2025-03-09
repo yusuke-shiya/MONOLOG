@@ -1,7 +1,7 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { useDiaryStore } from '../diary-store';
 import dayjs from 'dayjs';
-import { createTestStore } from '@/testing/zustand-utils';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+
+import { useDiaryStore } from '../diary-store';
 
 // テスト用のセットアップ
 beforeEach(() => {
@@ -24,7 +24,7 @@ afterEach(() => {
 describe('DiaryStore', () => {
   describe('addEntry', () => {
     it('新しいエントリーを正しく追加する', () => {
-      const { addEntry, entries } = useDiaryStore.getState();
+      const { addEntry, getEntryByDate } = useDiaryStore.getState();
 
       // 日記を追加
       addEntry('テスト日記', 7);
@@ -33,14 +33,13 @@ describe('DiaryStore', () => {
       const today = dayjs().format('YYYY-MM-DD');
 
       // エントリーが追加されたことを確認
-      expect(Object.keys(entries)).toHaveLength(1);
-      expect(entries[today]).toBeDefined();
-      expect(entries[today].content).toBe('テスト日記');
-      expect(entries[today].moodScore).toBe(7);
+      expect(getEntryByDate(today)).toBeDefined();
+      expect(getEntryByDate(today)?.content).toBe('テスト日記');
+      expect(getEntryByDate(today)?.moodScore).toBe(7);
     });
 
     it('特定の日付にエントリーを追加する', () => {
-      const { addEntry, entries } = useDiaryStore.getState();
+      const { addEntry, getEntryByDate } = useDiaryStore.getState();
 
       const testDate = '2025-01-01';
 
@@ -48,21 +47,21 @@ describe('DiaryStore', () => {
       addEntry('特定日の日記', 8, testDate);
 
       // エントリーが追加されたことを確認
-      expect(entries[testDate]).toBeDefined();
-      expect(entries[testDate].content).toBe('特定日の日記');
-      expect(entries[testDate].moodScore).toBe(8);
+      expect(getEntryByDate(testDate)).toBeDefined();
+      expect(getEntryByDate(testDate)?.content).toBe('特定日の日記');
+      expect(getEntryByDate(testDate)?.moodScore).toBe(8);
     });
   });
 
   describe('updateEntry', () => {
     it('既存のエントリーを正しく更新する', () => {
-      const { addEntry, updateEntry, entries } = useDiaryStore.getState();
+      const { addEntry, updateEntry, getEntryByDate } = useDiaryStore.getState();
 
       const testDate = '2025-01-01';
 
       // まず日記を追加
       addEntry('更新前', 5, testDate);
-      const originalEntry = entries[testDate];
+      const originalEntry = getEntryByDate(testDate);
 
       // 少し待ってから更新（timestampの差を作るため）
       vi.advanceTimersByTime(1000);
@@ -71,14 +70,14 @@ describe('DiaryStore', () => {
       updateEntry(testDate, '更新後', 8);
 
       // エントリーが更新されたことを確認
-      expect(entries[testDate].content).toBe('更新後');
-      expect(entries[testDate].moodScore).toBe(8);
-      expect(entries[testDate].createdAt).toBe(originalEntry.createdAt); // 作成日は変わらない
-      expect(entries[testDate].updatedAt).not.toBe(originalEntry.updatedAt); // 更新日は変わる
+      expect(getEntryByDate(testDate)?.content).toBe('更新後');
+      expect(getEntryByDate(testDate)?.moodScore).toBe(8);
+      expect(getEntryByDate(testDate)?.createdAt).toBe(originalEntry?.createdAt); // 作成日は変わらない
+      expect(getEntryByDate(testDate)?.updatedAt).not.toBe(originalEntry?.updatedAt); // 更新日は変わる
     });
 
     it('存在しないエントリーの更新は無視される', () => {
-      const { updateEntry, entries } = useDiaryStore.getState();
+      const { updateEntry, getEntryByDate } = useDiaryStore.getState();
 
       const nonExistentDate = '2099-12-31';
 
@@ -86,7 +85,7 @@ describe('DiaryStore', () => {
       updateEntry(nonExistentDate, '無視される更新', 9);
 
       // エントリーが追加されていないことを確認
-      expect(entries[nonExistentDate]).toBeUndefined();
+      expect(getEntryByDate(nonExistentDate)).toBeUndefined();
     });
   });
 
@@ -134,7 +133,7 @@ describe('DiaryStore', () => {
       addEntry('4月1日', 6, '2025-04-01');
 
       // 2025年3月のエントリーを取得
-      const marchEntries = getEntriesByMonth(2025, 2); // 0-indexedなので2が3月
+      const marchEntries = getEntriesByMonth(2025, 2);
 
       // 3月のエントリーが3つあることを確認
       expect(marchEntries).toHaveLength(3);

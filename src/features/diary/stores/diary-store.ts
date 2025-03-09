@@ -1,7 +1,8 @@
-import { create } from "zustand";
-import { persist } from "zustand/middleware";
-import { DiaryEntry } from "@/features/diary/types/diary";
-import dayjs from "dayjs";
+import dayjs from 'dayjs';
+import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
+
+import { DiaryEntry } from '@/features/diary/types/diary';
 
 /**
  * 日記ストアの状態定義
@@ -26,7 +27,7 @@ export const useDiaryStore = create<DiaryState>()(
 
       // 新規エントリーの追加
       addEntry: (content: string, moodScore: number, date?: string) => {
-        const targetDate = date || dayjs().format("YYYY-MM-DD");
+        const targetDate = date || dayjs().format('YYYY-MM-DD');
         const timestamp = new Date().toISOString();
 
         const newEntry: DiaryEntry = {
@@ -76,7 +77,7 @@ export const useDiaryStore = create<DiaryState>()(
       // 月ごとのエントリーを取得
       getEntriesByMonth: (year: number, month: number) => {
         const entries = get().entries;
-        const prefix = `${year}-${String(month + 1).padStart(2, "0")}`;
+        const prefix = `${year}-${String(month + 1).padStart(2, '0')}`;
 
         return Object.values(entries).filter((entry) =>
           entry.date.startsWith(prefix)
@@ -92,8 +93,8 @@ export const useDiaryStore = create<DiaryState>()(
 
         if (sortedDates.length === 0) return 0;
 
-        const today = dayjs().format("YYYY-MM-DD");
-        const yesterday = dayjs().subtract(1, "day").format("YYYY-MM-DD");
+        const today = dayjs().format('YYYY-MM-DD');
+        const yesterday = dayjs().subtract(1, 'day').format('YYYY-MM-DD');
 
         // 今日または昨日のエントリーがなければストリークは0
         if (!entries[today] && !entries[yesterday]) return 0;
@@ -109,7 +110,7 @@ export const useDiaryStore = create<DiaryState>()(
           const prevDate = dayjs(sortedDates[i]);
 
           // 日付の差が1日の場合、ストリークを増やす
-          if (currentDate.diff(prevDate, "day") === 1) {
+          if (currentDate.diff(prevDate, 'day') === 1) {
             streak++;
           } else {
             break; // 連続していない場合はループを抜ける
@@ -120,7 +121,7 @@ export const useDiaryStore = create<DiaryState>()(
       },
     }),
     {
-      name: "diary-storage", // LocalStorageのキー
+      name: 'diary-storage', // LocalStorageのキー
     }
   )
 );
