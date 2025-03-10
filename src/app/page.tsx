@@ -1,13 +1,14 @@
-"use client";
+'use client';
 
-import React, { useState, useEffect } from "react";
-import { DiaryForm } from "@/features/diary/components/diary-form";
-import { DiaryEntryView } from "@/features/diary/components/diary-entry";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useDiaryStore } from "@/features/diary/stores/diary-store";
-import dayjs from "dayjs";
-import { DiaryCalendar } from "@/features/diary/components/diary-calendar";
-import { DiaryEntry } from "@/features/diary/types/diary";
+import dayjs from 'dayjs';
+import React, { useEffect, useState } from 'react';
+
+import { Card, CardContent } from '@/components/ui/card';
+import { DiaryCalendar } from '@/features/diary/components/diary-calendar';
+import { DiaryEntryView } from '@/features/diary/components/diary-entry';
+import { DiaryForm } from '@/features/diary/components/diary-form';
+import { useDiaryStore } from '@/features/diary/stores/diary-store';
+import { DiaryEntry } from '@/features/diary/types/diary';
 
 export default function Home() {
   return <HomePage />;
@@ -20,7 +21,7 @@ const HomePage = () => {
   const { getEntryByDate, getStreak } = useDiaryStore();
 
   // 今日の日付と日記エントリーの取得
-  const today = dayjs().format("YYYY-MM-DD");
+  const today = dayjs().format('YYYY-MM-DD');
   const [todayEntry, setTodayEntry] = useState<DiaryEntry | null>(null);
   const [streak, setStreak] = useState(0);
 
@@ -94,5 +95,5 @@ const HomePage = () => {
 };
 
 // クライアントコンポーネントとして使用するための設定
-export const dynamic = "force-dynamic";
-export const runtime = "edge";
+export const dynamic = 'force-dynamic';
+export const runtime = 'edge';
